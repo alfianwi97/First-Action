@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="true"
+        jar="C:\Users\Owner\.android\build-cache\7a08d159bc7cb143573fb9e8f84cba01cdb2b10e\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="9be5e957849eb82ad9addf9bdb2896de8bf5654b">
+        <dex dex="C:\Users\Owner\AndroidStudioProjects\MyPhoneCall\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_f76ed30353b9e4045988598bde054aa98bc0c917\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Owner\.android\build-cache\4ae5055ba02f6486dde4074cade9fa0338ef3fcc\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="a9bc3e11fbff8e0d503ff795c12c73e1a6fad7a9">
+        <dex dex="C:\Users\Owner\AndroidStudioProjects\MyPhoneCall\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_7605a5081d99b8b9f83ccec3dae09e1f78b95116\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Owner\.android\build-cache\c55e747a81351170678bef0b150b0c80659964f3\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="240e5a7c620376184f3168cfdd36315b97b1fe07">
+        <dex dex="C:\Users\Owner\AndroidStudioProjects\MyPhoneCall\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_868ee595be8b7cfd2348fb4e264089cabc3291a0\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Owner\AndroidStudioProjects\MyPhoneCall\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="7b4f3f8e8eb378b74e4b5afaddbc7428b2a0fc05">
+        <dex dex="C:\Users\Owner\AndroidStudioProjects\MyPhoneCall\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_13e9d76c9baf238bc577c03ed21240c7271c3c36\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Owner\AndroidStudioProjects\MyPhoneCall\app\libs\sdk-v1.0.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="e2ce3786b6e9519934c4a54aaaaf39525bf4486c">
+        <dex dex="C:\Users\Owner\AndroidStudioProjects\MyPhoneCall\app\build\intermediates\transforms\dex\debug\folders\1000\2\sdk-v1.0.0_3dca56f8908db3b1eb0e879913473c16ec930c59\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Owner\.android\build-cache\8c3695571559fd5dc044073a86e9f6977fe119e4\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="50fde88f529e2c238d72467da774e113f47dc866">
+        <dex dex="C:\Users\Owner\AndroidStudioProjects\MyPhoneCall\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_2c07a83c8c8b256bd98ffc2fba8de7a18b7cd13e\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Owner\.android\build-cache\e567cec68433bc54b53930d9f61ea06af192b6c4\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="86baa7d1051901fc1b8e7f596732f71f32175bde">
+        <dex dex="C:\Users\Owner\AndroidStudioProjects\MyPhoneCall\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_20c40b0db542317fd7fed57c9e0eb026fe07e0a8\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Owner\.android\build-cache\a67fb5787587d4f728956c2f249805c8dc70c6fe\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="5bad89ac06f1015490c3332c1cd160be1d17c049">
+        <dex dex="C:\Users\Owner\AndroidStudioProjects\MyPhoneCall\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_52fc790bb53b025635fccc783fefb6797338759a\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Owner\.android\build-cache\3251fb569b73ea7b90c69fcdffbed38990075926\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="3f813cc0713085e46735bcabf9def2ffb6419de7">
+        <dex dex="C:\Users\Owner\AndroidStudioProjects\MyPhoneCall\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_501e00930c28be5db102510db662dcaed6ca6cab\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Owner\.android\build-cache\e378a71fc60882bde02190e424b49e9379d702aa\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="2a2d9cd43adbe7599a78f2293273a77881c1909a">
+        <dex dex="C:\Users\Owner\AndroidStudioProjects\MyPhoneCall\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_38c211680a3d79df56fd700bb8a134d293c1a452\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Owner\.android\build-cache\47078a48184b6aa09b530257466162d729569b05\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="2df23fb8581e8503db6e33739b450f9eb4a8b30a">
+        <dex dex="C:\Users\Owner\AndroidStudioProjects\MyPhoneCall\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_b2ea201adabecf389203d11d98ac08271ead4bd9\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Owner\.android\build-cache\70cd8467bf660f6ecde63120a4e2d9361063555e\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="79a435f1c45ac04593a5134d70da983305584e90">
+        <dex dex="C:\Users\Owner\AndroidStudioProjects\MyPhoneCall\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_ba0f4f5f6b60a261193d8ab1b92fb1433e6f2690\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Owner\.android\build-cache\96b157e0f0427ce7b14fd61a7fd322ce84c3455b\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="4a5da59bfe8bee5a41daa7c26b970b12699ac8db">
+        <dex dex="C:\Users\Owner\AndroidStudioProjects\MyPhoneCall\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_64bdbaa15b86a0faca6568d78621cecd00a718b5\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Owner\AndroidStudioProjects\MyPhoneCall\app\libs\accessory-v2.5.2.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="ea6af326eeef4c0059a1bb55911e2f25cd3a5e40">
+        <dex dex="C:\Users\Owner\AndroidStudioProjects\MyPhoneCall\app\build\intermediates\transforms\dex\debug\folders\1000\2\accessory-v2.5.2_55e134e7a9f1989c6671fcf70e78ef62c5e4945a\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Owner\.android\build-cache\69e4d826cd8c7080c5d2785eb1bef1195006a7fc\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="cdfe6f00bbbe6bf590b4306017d485d845ffc7e5">
+        <dex dex="C:\Users\Owner\AndroidStudioProjects\MyPhoneCall\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_e6c09cd0be8ddcdbe7c79a059df6c14cafd36670\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Owner\.android\build-cache\df007ab6fd3c7b61116adaddff11f4629c412abf\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="e015f5a6691f80b1f71e5299d48933be6a057963">
+        <dex dex="C:\Users\Owner\AndroidStudioProjects\MyPhoneCall\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_e7a6aeee1ea9039f1ff84252c7b5ff7d5ca6672a\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Owner\AndroidStudioProjects\MyPhoneCall\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="3be78ebc2706b2e1fe2f12d5726887a92d6c183b">
+        <dex dex="C:\Users\Owner\AndroidStudioProjects\MyPhoneCall\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run_9a7e01f848b2e2d06b359c8e47dda2bae4a2d08f\classes.dex" />
+    </item>
+
+</items>
