@@ -152,8 +152,6 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
         gsonBuilder.setDateFormat("M/d/yy hh:mm a");
         gson = gsonBuilder.create();
         mGoogleApiClient.connect();
-//        String stringUrl1 = "https://maps.googleapis.com/maps/api/place/search/json?location=-6.456341,106.845621&radius=1500&types=hospital&sensor=true&key=AIzaSyBrLe3fjpOvYhBRn3U9ypqeVfag3pgNQDY";
-//        String stringUrl2 = "https://maps.googleapis.com/maps/api/place/details/json?placeid=ChIJBxt4xn_raS4REaNHge4v1KA&key=AIzaSyBrLe3fjpOvYhBRn3U9ypqeVfag3pgNQDY";
 
 //
 //        HttpURLConnection httpconn = null;
@@ -590,6 +588,7 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
                     gpsCheck();
                     if (connectionHandler.isConnected() && isEnable()){
                         calculateLocation();
+                        if(!isLatLongEmpty())
                         findNation();
                     }
                 } catch (Settings.SettingNotFoundException e) {
@@ -644,6 +643,7 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
         private String nation;
         private String name;
         private String phoneNumber;
+        private double distance;
         public LocationData(String provider) {
             super(provider);
         }
@@ -658,11 +658,15 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
 
         public String getName(){return name;}
         public String getPhoneNumber(){return phoneNumber;}
+        public Double getDistance(){return distance;}
         public String getType(){return type;}
         public String getId(){return id;}
         public String getNation(){return nation;}
         public void setName(String name){this.name=name;}
         public void setPhoneNumber(String phoneNumber){this.phoneNumber=phoneNumber;}
+        public void setDistance(Double latitude, Double longitude){
+
+        }
         public void setType(String type){this.type=type;}
         public void setId(String id){this.id=id;}
         public void setNation(String nation){this.nation=nation;}
@@ -747,9 +751,9 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
     private final Response.Listener<String> onPostsLoaded1 = new Response.Listener<String>() {
         @Override
         public void onResponse(String response) {
-//            Toast.makeText(MainActivity.this, "get it!", Toast.LENGTH_LONG).show();
-            ResponseClass res = gson.fromJson(response, ResponseClass.class);
-            if(!res.status.equals("OK")){
+            ResponseClass res = null;
+            res = gson.fromJson(response, ResponseClass.class);
+            if(res==null || !res.status.equals("OK")){
                 status="idle";
                 return;
             }
