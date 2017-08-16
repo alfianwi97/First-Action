@@ -53,6 +53,8 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
@@ -71,15 +73,17 @@ import java.util.Locale;
 
 public class MainActivity extends Activity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     private static final int REQUEST_CHECK_SETTINGS = 0x1;
-    private Button callPoliceButton;
-    private Button callHospitalButton;
-    private Button callFireStationButton;
-    private Button loginButton;
-    private Button mapButton;
-
+    private Button buttonCallPolice;
+    private Button buttonCallHospital;
+    private Button buttonCallFireStation;
+    private Button buttonLogin;
+    private Button buttonMap;
+    private Button buttonSchedule;
     private FusedLocationProviderClient mFusedLocationClient;
 //    TextView statusTextField;
     TextView resultTextField;
+
+    public ScheduleActivity.User user=new ScheduleActivity.User();
 
     SettingsClient client;
     LocationSettingsRequest.Builder builder;
@@ -107,11 +111,12 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
-        callPoliceButton = (Button) findViewById(R.id.btnPolice);
-        callFireStationButton = (Button) findViewById(R.id.btnFireStation);
-        callHospitalButton = (Button) findViewById(R.id.btnHospital);
-        mapButton = (Button) findViewById(R.id.btnMap);
-        loginButton = (Button) findViewById(R.id.btnLogin);
+        buttonCallPolice = (Button) findViewById(R.id.btnPolice);
+        buttonCallFireStation = (Button) findViewById(R.id.btnFireStation);
+        buttonCallHospital = (Button) findViewById(R.id.btnHospital);
+        buttonMap = (Button) findViewById(R.id.btnMap);
+        buttonLogin = (Button) findViewById(R.id.btnLogin);
+        buttonSchedule = (Button) findViewById(R.id.btnSchedule);
 //        statusTextField = (TextView) findViewById(R.id.status);
 ////        resultTextField = (TextView) findViewById(R.id.resultField);
 
@@ -136,7 +141,7 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
 
         requestCreator = new RequestCreator();
         requestQueue = Volley.newRequestQueue(getApplicationContext());
-        requestHandler = new RequestHandler(10000);
+        requestHandler = new RequestHandler(5000);
         requestHandler.startRepeatingTask();
 
         if (mGoogleApiClient == null) {
@@ -352,7 +357,7 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
 //                }
 //            }
 //        }, 500);
-        callFireStationButton.setOnClickListener(new View.OnClickListener() {
+        buttonCallFireStation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
                 Intent callIntent = new Intent(Intent.ACTION_CALL);
@@ -365,6 +370,7 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
                 if(fireStationLocation.isEmpty()){
                     phoneNumber+="112";
                 }else{
+                    Collections.sort(fireStationLocation, new DistanceComparator());
                     phoneNumber+=fireStationLocation.get(0).getPhoneNumber();
                     Toast.makeText(MainActivity.this, phoneNumber+" "+fireStationLocation.get(0).getName(), Toast.LENGTH_LONG).show();
                 }
@@ -373,19 +379,20 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
                 startActivity(callIntent);
             }
         });
-        callHospitalButton.setOnClickListener(new View.OnClickListener() {
+        buttonCallHospital.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
                 Intent callIntent = new Intent(Intent.ACTION_CALL);
                 String phoneNumber="tel:";
-
 ////                resultTextField.setText(" HOS:"+hospitalLocation.size()+"|POL:"+policeLocation.size()+"|FS:"+fireStationLocation.size());
                 for(int i=0;i<hospitalLocation.size();i++);
+//                    Toast.makeText(MainActivity.this, hospitalLocation.get(i).getName()+" "+hospitalLocation.get(i).getDistance().toString(), Toast.LENGTH_LONG).show();
 ////                    resultTextField.setText(resultTextField.getText()+hospitalLocation.get(i).getName()+"|"+hospitalLocation.get(i).getPhoneNumber()+"|");
 
                 if(hospitalLocation.isEmpty()){
                     phoneNumber+="112";
                 }else{
+                    Collections.sort(hospitalLocation, new DistanceComparator());
                     phoneNumber+=hospitalLocation.get(0).getPhoneNumber();
                     Toast.makeText(MainActivity.this, phoneNumber+" "+hospitalLocation.get(0).getName(), Toast.LENGTH_LONG).show();
                 }
@@ -393,12 +400,11 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
                 startActivity(callIntent);
             }
         });
-        callPoliceButton.setOnClickListener(new View.OnClickListener() {
+        buttonCallPolice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
                 Intent callIntent = new Intent(Intent.ACTION_CALL);
                 String phoneNumber="tel:";
-
 ////                resultTextField.setText(" HOS:"+hospitalLocation.size()+"|POL:"+policeLocation.size()+"|FS:"+fireStationLocation.size());
                 for(int i=0;i<policeLocation.size();i++);
 ////                    resultTextField.setText(resultTextField.getText()+policeLocation.get(i).getName()+"|"+policeLocation.get(i).getPhoneNumber()+"|");
@@ -406,6 +412,7 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
                 if(policeLocation.isEmpty()){
                     phoneNumber+="112";
                 }else{
+                    Collections.sort(policeLocation, new DistanceComparator());
                     phoneNumber+=policeLocation.get(0).getPhoneNumber();
                     Toast.makeText(MainActivity.this, phoneNumber+" "+policeLocation.get(0).getName(), Toast.LENGTH_LONG).show();
                 }
@@ -413,38 +420,39 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
                 startActivity(callIntent);
             }
         });
-        loginButton.setOnClickListener(new View.OnClickListener() {
+        buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, AccountActivity.class));
+            startActivity(new Intent(MainActivity.this, AccountActivity.class));
             }
         });
-        mapButton.setOnClickListener(new View.OnClickListener() {
+        buttonSchedule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent is = new Intent(getApplicationContext(), ScheduleActivity.class);
-                startActivity(is);
-                return;
+                Intent scheduleIntent = new Intent(getApplicationContext(), ScheduleActivity.class);
+                startActivity(scheduleIntent);
+            }
+        });
+        buttonMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!connectionHandler.isConnected()) return; //alert
+                try {
+                    gpsHandler.gpsCheck();
+                    if (!gpsHandler.isEnable()) gpsHandler.promptGpsSetting();
+                } catch (Settings.SettingNotFoundException e) {
+                    e.printStackTrace();
+                }
+                if (!gpsHandler.isEnable()) return; //show alert
+                if (connectionHandler.isConnected() && gpsHandler.isEnable()){
+                    gpsHandler.calculateLocation();
+                    gpsHandler.findNation();
+                }
 
-//                if (!connectionHandler.isConnected()) return; //alert
-//                try {
-//                    gpsHandler.gpsCheck();
-//                    if (!gpsHandler.isEnable()) gpsHandler.promptGpsSetting();
-//                } catch (Settings.SettingNotFoundException e) {
-//                    e.printStackTrace();
-//                }
-//                if (!gpsHandler.isEnable()) return; //show alert
-//                if (connectionHandler.isConnected() && gpsHandler.isEnable()){
-//                    gpsHandler.calculateLocation();
-//                    gpsHandler.findNation();
-//                }
-
-
-//                Intent mapIntent = new Intent(getApplicationContext(), MapsActivity.class);
-//                mapIntent.putExtra("longitude",gpsHandler.getLongitude());
-//                mapIntent.putExtra("latitude",gpsHandler.getLatitude());
-////                Log.i("longlat2",gpsHandler.getLongitude()+" "+gpsHandler.getLatitude());
-//                startActivity(mapIntent);
+                Intent mapIntent = new Intent(getApplicationContext(), MapsActivity.class);
+                mapIntent.putExtra("longitude",gpsHandler.getLongitude());
+                mapIntent.putExtra("latitude",gpsHandler.getLatitude());
+                startActivity(mapIntent);
             }
         });
     }
@@ -567,6 +575,7 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
                 if (mLastLocation != null) {
                     setLongitude(mLastLocation.getLongitude());
                     setLatitude(mLastLocation.getLatitude());
+                    user.setCurrentLocation(new LocationData(mLastLocation.getLatitude(), mLastLocation.getLongitude()));
     //                Toast.makeText(MainActivity.this, Double.toString(getLatitude())+" , "+Double.toString(getLongitude()), Toast.LENGTH_LONG).show();///////////////////////////////////////////////////////////////
                 } //else Toast.makeText(MainActivity.this, "null", Toast.LENGTH_LONG).show();///////////////////////////////////////////////////////////////
             }catch(SecurityException e) {}
@@ -641,10 +650,18 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
         private String name;
         private String phoneNumber;
         private double distance;
+        private void setDistance(){
+            distance=this.distanceTo(user.getCurrentLocation());
+//            Toast.makeText(MainActivity.this, Float.toString(this.distanceTo(user.getCurrentLocation())), Toast.LENGTH_LONG).show();
+        }
         public LocationData(String provider) {
             super(provider);
         }
-        public LocationData(String provider, String id){super(provider); setId(id);}
+        public LocationData(Double latitude, Double longitude) {
+            super("location");
+            setLatitude(latitude);
+            setLongitude(longitude);
+        }
         public LocationData(String provider, String id, String name, String type, String phoneNumber, Double latitude, Double longitude){
             super(provider);
             setId(id);
@@ -653,6 +670,7 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
             setPhoneNumber(phoneNumber);
             setLatitude(latitude);
             setLongitude(longitude);
+            setDistance();
         }
 
         public String getName(){return name;}
@@ -663,9 +681,7 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
         public String getNation(){return nation;}
         public void setName(String name){this.name=name;}
         public void setPhoneNumber(String phoneNumber){this.phoneNumber=phoneNumber;}
-        public void setDistance(Double latitude, Double longitude){
 
-        }
         public void setType(String type){this.type=type;}
         public void setId(String id){this.id=id;}
         public void setNation(String nation){this.nation=nation;}
@@ -730,13 +746,13 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
         @Override
         public void run() {
             if(!connectionHandler.isConnected() || gpsHandler.isLatLongEmpty() || !status.equals("idle")){
-                postDelayed(sendRequest, 5000);
+                postDelayed(sendRequest, timeInterval);
                 return;
             }
             setMainRequestUrl(requestCreator.getFirstRequest(Double.toString(gpsHandler.getLatitude()), Double.toString(gpsHandler.getLongitude()),null));
 ////            resultTextField.setText(requestCreator.getFirstRequest(Double.toString(gpsHandler.getLatitude()), Double.toString(gpsHandler.getLongitude()),null)+" "+gpsHandler.getLatitude());
             sendFirstRequest();
-            postDelayed(sendRequest,1000);
+            postDelayed(sendRequest,timeInterval/5);
         }
     };
 
@@ -796,6 +812,7 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
             }
             latitude = res.result.geometry.location.lat;
             longitude = res.result.geometry.location.lng;
+
 
             switch(res.result.types.get(0)){
                 case "hospital":
@@ -873,11 +890,17 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
 //            Log.e(MainActivity.class.getSimpleName(), error.toString());
 //        }
 //    };
+    ///////////////Array Comparator Class/////////////
+    public class DistanceComparator implements Comparator<LocationData>{
+    @Override
+    public int compare(LocationData first, LocationData second) {
+        return first.getDistance().compareTo(second.distance);
+    }
+}
+    ////////////End of Array Comparator Class/////////
     //////////////////////JSON Class - 1//////////////
     public class ResponseClass{
-//        @SerializedName("results")
         List<Results> results;
-//        @SerializedName("status")
         String status;
 
         @SerializedName("next_page_token")
@@ -890,9 +913,7 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
     //////////End of JSON Class - 1//////////////1/////
     //////////////////////JSON Class - 2//////////////
     public class ResponseClass2{
-        //@SerializedName("result")
         Results2 result;
-        //@SerializedName("status")
         String status;
     }
 
