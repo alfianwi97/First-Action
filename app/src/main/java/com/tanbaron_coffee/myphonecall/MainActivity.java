@@ -58,19 +58,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
-//class HelloAccessoryConsumer extends SAAgent {
-//
-//    protected HelloAccessoryConsumer(String s, Class<? extends SASocket> aClass) {
-//        super(s, aClass);
-//    }
-//
-//    @Nullable
-//    @Override
-//    public IBinder onBind(Intent intent) {
-//        return null;
-//    }
-//}
-
 public class MainActivity extends Activity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     private static final int REQUEST_CHECK_SETTINGS = 0x1;
     private Button buttonCallPolice;
@@ -83,7 +70,10 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
 //    TextView statusTextField;
     TextView resultTextField;
 
-    public ScheduleActivity.User user=new ScheduleActivity.User();
+    public static ScheduleActivity.User user=new ScheduleActivity.User();
+    public static List<LocationData> hospitalLocation;
+    public static List<LocationData> policeLocation;
+    public static List<LocationData> fireStationLocation;
 
     SettingsClient client;
     LocationSettingsRequest.Builder builder;
@@ -92,13 +82,9 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
     Task<LocationSettingsResponse> task;
     PendingResult<LocationSettingsResult> result;
 
-    List<LocationData> hospitalLocation;
-    List<LocationData> policeLocation;
-    List<LocationData> fireStationLocation;
-
-    ConnectionHandler connectionHandler;
-    GpsHandler gpsHandler;
-    RequestHandler requestHandler;
+    private ConnectionHandler connectionHandler;
+    private GpsHandler gpsHandler;
+    private RequestHandler requestHandler;
     private RequestQueue requestQueue;
     private RequestCreator requestCreator;
     private Gson gson;
@@ -156,7 +142,7 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
         gson = gsonBuilder.create();
         mGoogleApiClient.connect();
 
-//
+
 //        HttpURLConnection httpconn = null;
 //        try {
 //            URL url = new URL(stringUrl);
@@ -264,8 +250,6 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
                 }
             }
         });
-
-
 
 
 //        googleApiClient = null;
@@ -436,22 +420,22 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
         buttonMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!connectionHandler.isConnected()) return; //alert
-                try {
-                    gpsHandler.gpsCheck();
-                    if (!gpsHandler.isEnable()) gpsHandler.promptGpsSetting();
-                } catch (Settings.SettingNotFoundException e) {
-                    e.printStackTrace();
-                }
-                if (!gpsHandler.isEnable()) return; //show alert
-                if (connectionHandler.isConnected() && gpsHandler.isEnable()){
-                    gpsHandler.calculateLocation();
-                    gpsHandler.findNation();
-                }
+//                if (!connectionHandler.isConnected()) return; //alert
+//                try {
+//                    gpsHandler.gpsCheck();
+//                    if (!gpsHandler.isEnable()) gpsHandler.promptGpsSetting();
+//                } catch (Settings.SettingNotFoundException e) {
+//                    e.printStackTrace();
+//                }
+//                if (!gpsHandler.isEnable()) return; //show alert
+//                if (connectionHandler.isConnected() && gpsHandler.isEnable()){
+//                    gpsHandler.calculateLocation();
+//                    gpsHandler.findNation();
+//                }
 
                 Intent mapIntent = new Intent(getApplicationContext(), MapsActivity.class);
-                mapIntent.putExtra("longitude",gpsHandler.getLongitude());
-                mapIntent.putExtra("latitude",gpsHandler.getLatitude());
+                mapIntent.putExtra("longitude",user.getCurrentLocation().getLongitude());
+                mapIntent.putExtra("latitude",user.getCurrentLocation().getLatitude());
                 startActivity(mapIntent);
             }
         });
@@ -691,14 +675,15 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
             List<Address> addresses = null;
             try {
                 addresses = gcd.getFromLocation(getLatitude(), getLongitude(), 1);
+                if (addresses.size() > 0)
+                {
+                    String nationName=addresses.get(0).getCountryName();
+                    setNation(nationName);
+                    Log.i("Country Name",nationName);
+                }
             } catch (IOException e) {
+                setNation("Undefined");
                 e.printStackTrace();
-            }
-            if (addresses.size() > 0)
-            {
-                String nationName=addresses.get(0).getCountryName();
-                setNation(nationName);
-                Log.i("Country Name",nationName);
             }
         }
 
@@ -712,39 +697,38 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
         public String getSecondRequest(String placeId){return new String("https://maps.googleapis.com/maps/api/place/details/json?placeid="+placeId+"&key=AIzaSyBrLe3fjpOvYhBRn3U9ypqeVfag3pgNQDY");}
     }
 
-////////////////////////Under Construct//////////////////////////////
     public class RequestHandler extends TaskHandler{
-    private String mainRequestUrl;
-    private int requestCount = new Integer(0);
-    private String status="idle";
+        private String mainRequestUrl;
+        private int requestCount = new Integer(0);
+        private String status="idle";
 
-    RequestHandler(int timeInterval){this.timeInterval=timeInterval;}
-    RequestHandler(String mainRequestUrl){this.mainRequestUrl=mainRequestUrl;}
+        RequestHandler(int timeInterval){this.timeInterval=timeInterval;}
+        RequestHandler(String mainRequestUrl){this.mainRequestUrl=mainRequestUrl;}
 
-    public String getMainRequestUrl(){return mainRequestUrl;}
-    public void setMainRequestUrl(String url){mainRequestUrl=url;}
+        public String getMainRequestUrl(){return mainRequestUrl;}
+        public void setMainRequestUrl(String url){mainRequestUrl=url;}
 
-    @Override
-    public void startRepeatingTask() { sendRequest.run(); }
-
-    @Override
-    public void stopRepeatingTask() { removeCallbacks(sendRequest);
-        Toast.makeText(MainActivity.this, "stop", Toast.LENGTH_LONG).show();
-    }
-
-    private void sendFirstRequest(){
-        status="work";
-        StringRequest request = new StringRequest(Request.Method.GET, mainRequestUrl, onPostsLoaded1, onPostsError);
-        requestQueue.add(request);
-    }
-    private void sendSecondRequest(String url) {
-        StringRequest request = new StringRequest(Request.Method.GET, url, onPostsLoaded2, onPostsError);
-        requestQueue.add(request);
-    }
-
-    Runnable sendRequest = new Runnable() {
         @Override
-        public void run() {
+        public void startRepeatingTask() { sendRequest.run(); }
+
+        @Override
+        public void stopRepeatingTask() { removeCallbacks(sendRequest);
+            Toast.makeText(MainActivity.this, "stop", Toast.LENGTH_LONG).show();
+        }
+
+        private void sendFirstRequest(){
+            status="work";
+            StringRequest request = new StringRequest(Request.Method.GET, mainRequestUrl, onPostsLoaded1, onPostsError);
+            requestQueue.add(request);
+        }
+        private void sendSecondRequest(String url) {
+            StringRequest request = new StringRequest(Request.Method.GET, url, onPostsLoaded2, onPostsError);
+            requestQueue.add(request);
+        }
+
+        Runnable sendRequest = new Runnable() {
+            @Override
+            public void run() {
             if(!connectionHandler.isConnected() || gpsHandler.isLatLongEmpty() || !status.equals("idle")){
                 postDelayed(sendRequest, timeInterval);
                 return;
@@ -753,20 +737,20 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
 ////            resultTextField.setText(requestCreator.getFirstRequest(Double.toString(gpsHandler.getLatitude()), Double.toString(gpsHandler.getLongitude()),null)+" "+gpsHandler.getLatitude());
             sendFirstRequest();
             postDelayed(sendRequest,timeInterval/5);
-        }
-    };
+            }
+        };
 
-    Runnable sendAdditionalRequest = new Runnable() {
-        @Override
-        public void run() {
-////            resultTextField.setText(resultTextField.getText()+" HOS:"+hospitalLocation.size()+"|POL:"+policeLocation.size()+"|FS:"+fireStationLocation.size());
+        Runnable sendAdditionalRequest = new Runnable() {
+            @Override
+            public void run() {
+    ////resultTextField.setText(resultTextField.getText()+" HOS:"+hospitalLocation.size()+"|POL:"+policeLocation.size()+"|FS:"+fireStationLocation.size());
             sendFirstRequest();
-        }
-    };
+            }
+        };
 
-    private final Response.Listener<String> onPostsLoaded1 = new Response.Listener<String>() {
-        @Override
-        public void onResponse(String response) {
+        private final Response.Listener<String> onPostsLoaded1 = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
             ResponseClass res = null;
             res = gson.fromJson(response, ResponseClass.class);
             if(res==null || !res.status.equals("OK")){
@@ -782,14 +766,14 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
                 postDelayed(sendAdditionalRequest,3000);
             }
             status="done";
-        }
-    };
+            }
+        };
 
-    //https://maps.googleapis.com/maps/api/place/search/json?location=-6.4653324,%20106.8598435&hasNextPage=true&nextPage()=true&radius=5000&types=hospital|police|fire_station&sensor=true&key=AIzaSyBrLe3fjpOvYhBRn3U9ypqeVfag3pgNQDY&pagetoken=
+        //https://maps.googleapis.com/maps/api/place/search/json?location=-6.4653324,%20106.8598435&hasNextPage=true&nextPage()=true&radius=5000&types=hospital|police|fire_station&sensor=true&key=AIzaSyBrLe3fjpOvYhBRn3U9ypqeVfag3pgNQDY&pagetoken=
 
-    private final Response.Listener<String> onPostsLoaded2 = new Response.Listener<String>() {
-        @Override
-        public void onResponse(String response) {
+        private final Response.Listener<String> onPostsLoaded2 = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
 //            resultTextField.setText(resultTextField.getText()+"Request("+requestCount+") |");
 //            Toast.makeText(MainActivity.this, "Request2 fetched", Toast.LENGTH_LONG).show();
             ResponseClass2 res = gson.fromJson(response, ResponseClass2.class);
@@ -813,7 +797,6 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
             latitude = res.result.geometry.location.lat;
             longitude = res.result.geometry.location.lng;
 
-
             switch(res.result.types.get(0)){
                 case "hospital":
                     hospitalLocation.add(new LocationData("hospital", id, name, type, phoneNumber, latitude, longitude));
@@ -827,16 +810,64 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
                 default:
                     break;
             }
-        }
-    };
+            }
+        };
 
-    private final Response.ErrorListener onPostsError = new Response.ErrorListener() {
+        private final Response.ErrorListener onPostsError = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(MainActivity.class.getSimpleName(), error.toString());
+            }
+        };
+    }
+
+    ///////////////Array Comparator Class/////////////
+    public class DistanceComparator implements Comparator<LocationData>{
         @Override
-        public void onErrorResponse(VolleyError error) {
-            Log.e(MainActivity.class.getSimpleName(), error.toString());
+        public int compare(LocationData first, LocationData second) {
+            return first.getDistance().compareTo(second.distance);
         }
-    };
+    }
+    ////////////End of Array Comparator Class/////////
+    //////////////////////JSON Class - 1//////////////
+    public class ResponseClass{
+        List<Results> results;
+        String status;
+
+        @SerializedName("next_page_token")
+        String pageToken=null;
+    }
+    public class Results{
+        @SerializedName("place_id")
+        String place_id=null;
+    }
+    //////////End of JSON Class - 1//////////////1/////
+    //////////////////////JSON Class - 2//////////////
+    public class ResponseClass2{
+        Results2 result;
+        String status;
+    }
+
+    public class Results2{
+        @SerializedName("formatted_phone_number")
+        String phoneNumber;
+
+        List<String> types;
+        String place_id;
+        String name;
+
+        Geometry geometry;
+    }
+    public class Geometry{
+        LocationClass location;
+    }
+    public class LocationClass{
+        double lat;
+        double lng;
+    }
+    //////////End of JSON Class - 2///////////////////
 }
+
 ////////////////////////////////////////////////////////////////////////
 //    private void fetchPosts1(String url) {
 //        StringRequest request = new StringRequest(Request.Method.GET, url, onPostsLoaded1, onPostsError);
@@ -890,107 +921,3 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
 //            Log.e(MainActivity.class.getSimpleName(), error.toString());
 //        }
 //    };
-    ///////////////Array Comparator Class/////////////
-    public class DistanceComparator implements Comparator<LocationData>{
-    @Override
-    public int compare(LocationData first, LocationData second) {
-        return first.getDistance().compareTo(second.distance);
-    }
-}
-    ////////////End of Array Comparator Class/////////
-    //////////////////////JSON Class - 1//////////////
-    public class ResponseClass{
-        List<Results> results;
-        String status;
-
-        @SerializedName("next_page_token")
-        String pageToken=null;
-    }
-    public class Results{
-        @SerializedName("place_id")
-        String place_id=null;
-    }
-    //////////End of JSON Class - 1//////////////1/////
-    //////////////////////JSON Class - 2//////////////
-    public class ResponseClass2{
-        Results2 result;
-        String status;
-    }
-
-    public class Results2{
-        @SerializedName("formatted_phone_number")
-        String phoneNumber;
-
-        List<String> types;
-        String place_id;
-        String name;
-
-        Geometry geometry;
-    }
-    public class Geometry{
-        LocationClass location;
-    }
-    public class LocationClass{
-        double lat;
-        double lng;
-    }
-    //////////End of JSON Class - 2///////////////////
-}
-
-    //    public class ConnectionChecker extends Handler {
-//        private int timeInterval = 5000;
-//        private ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-//        private NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-//        private boolean connectionStatus;
-//        private void checkConnection(){
-//            connectionStatus = activeNetwork != null && activeNetwork.isConnected();
-//        }
-//        public Boolean isConnected(){return connectionStatus;}
-//        public int getTimeInterval(){return timeInterval;}
-//
-//        Runnable connectionStatusChecking = new Runnable() {
-//            @Override
-//            public void run() {
-//                String statusText;
-//                connectionChecker.checkConnection();
-//                if(connectionChecker.isConnected()) statusText = "Connected";
-//                else statusText = "Disconnected";
-//                statusTextField.setText(statusText);
-//                postDelayed(connectionStatusChecking, connectionChecker.timeInterval);
-//            }
-//        };
-//
-//        public void startRepeatingTask() {connectionStatusChecking.run();}
-//        public void stopRepeatingTask() {removeCallbacks(connectionStatusChecking);}
-//    }
-
-
-
-
-//    private class ConnectionChecking extends AsyncTask<Boolean, Boolean, Boolean> {
-//        @Override
-//        protected Boolean doInBackground(Boolean... params) {
-//            try {
-//                int timeoutMs = 10000;
-//                Socket sock = new Socket();
-//                SocketAddress sockaddr = new InetSocketAddress("8.8.8.8", 53);
-//
-//                sock.connect(sockaddr, timeoutMs);
-//                sock.close();
-//
-//                return true;
-//            } catch (IOException e) { return false; }
-//        }
-//
-//        @Override
-//        protected void onPreExecute() {
-//            text.setText("Checking internet connection..");
-//        }
-//        @Override
-//        public void onPostExecute(Boolean status){
-//            String statusText;
-//            if(status) statusText = "Connected";
-//                    else statusText = "Disconnected";
-//            text.setText(statusText);
-//        }
-//    }

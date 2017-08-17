@@ -56,7 +56,7 @@
         android:id="@+id/imageView"
         android:layout_width="387dp"
         android:layout_height="77dp"
-        android:src="@drawable/mapsHeader"
+        android:src="@drawable/maps_header"
         android:layout_marginRight="-0dp"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginLeft="0dp"
@@ -68,7 +68,11 @@
         app:layout_constraintBottom_toTopOf="@+id/mapView"
         app:layout_constraintVertical_bias="1.0" />
 
-    <com.google.android.gms.maps.MapView
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".MapsActivity"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+
         android:id="@+id/mapView"
         android:layout_width="408dp"
         android:layout_height="192dp"
@@ -91,8 +95,6 @@
         app:layout_constraintHorizontal_bias="0.666"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent">
-
-
     </ScrollView>
 
 </android.support.constraint.ConstraintLayout>

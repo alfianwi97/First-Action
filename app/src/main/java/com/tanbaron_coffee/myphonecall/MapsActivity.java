@@ -1,11 +1,8 @@
 package com.tanbaron_coffee.myphonecall;
 
 import android.content.Intent;
-import android.location.Address;
-import android.location.Geocoder;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v4.app.FragmentActivity;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -15,9 +12,10 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
+import static com.tanbaron_coffee.myphonecall.MainActivity.fireStationLocation;
+import static com.tanbaron_coffee.myphonecall.MainActivity.hospitalLocation;
+import static com.tanbaron_coffee.myphonecall.MainActivity.policeLocation;
+import static com.tanbaron_coffee.myphonecall.MainActivity.user;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
     private GoogleMap mMap;
@@ -27,7 +25,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+                .findFragmentById(R.id.mapView);
         mapFragment.getMapAsync(this);
     }
 
@@ -55,13 +53,31 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         latitude = receiveIntent.getDoubleExtra("latitude",0);
         location = new LatLng(latitude,longitude);
 
-        mMap.addMarker(new MarkerOptions().position(location).title("Your Location"));
+        //user location init
+        mMap.addMarker(new MarkerOptions().position(new LatLng(user.getCurrentLocation().getLatitude(),user.getCurrentLocation().getLongitude())).title("Your Location"));
+
+        //hospital location init
+        for(int i=0;i<hospitalLocation.size();i++)
+            mMap.addMarker(new MarkerOptions().position(new LatLng(hospitalLocation.get(i).getLatitude(),
+                    hospitalLocation.get(i).getLongitude())).title(hospitalLocation.get(i).getName()));
+
+        //police station location init
+        for(int i=0;i<policeLocation.size();i++)
+            mMap.addMarker(new MarkerOptions().position(new LatLng(policeLocation.get(i).getLatitude(),
+                    policeLocation.get(i).getLongitude())).title(policeLocation.get(i).getName()));
+
+        //fire station location init
+        for(int i=0;i<fireStationLocation.size();i++)
+            mMap.addMarker(new MarkerOptions().position(new LatLng(fireStationLocation.get(i).getLatitude(),
+                    fireStationLocation.get(i).getLongitude())).title(fireStationLocation.get(i).getName()));
+
         cameraPosition = new CameraPosition.Builder()
                 .target(location)      // Sets the center of the map
-                .zoom(17)                   // Sets the zoom
-//                .bearing(90)                // Sets the orientation of the camera to east
-//                .tilt(30)                   // Sets the tilt of the camera to 30 degrees
+                .zoom(13)                   // Sets the zoom
                 .build();                   // Creates a CameraPosition from the builder
+        //                .bearing(90)                // Sets the orientation of the camera to east
+        //                .tilt(30)                   // Sets the tilt of the camera to 30 degrees
+
         mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
 

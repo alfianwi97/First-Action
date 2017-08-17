@@ -10,8 +10,8 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 public class ScheduleActivity extends Activity {
-    List<Schedule> routines;
-    List<Schedule> events;
+    public static List<Schedule> routines;
+    public static List<Schedule> events;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +26,7 @@ public class ScheduleActivity extends Activity {
         Toast.makeText(ScheduleActivity.this, routines.get(0).getDay().toString(), Toast.LENGTH_LONG).show();
     }
 
-    public static class Schedule{
+    public class Schedule{
         Calendar calendar;
         private String title;
         private String description;
