@@ -58,14 +58,23 @@
         android:id="@+id/imageView"
         android:layout_width="387dp"
         android:layout_height="77dp"
+<<<<<<< HEAD
         android:src="@drawable/mapsHeader"
+=======
+        android:src="@drawable/maps_header"
+        android:layout_marginRight="-0dp"
+>>>>>>> 32e9e7b738424380958af2f87fb12c7b26e2dc06
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintHorizontal_bias="0.333"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="497dp" />
 
-    <com.google.android.gms.maps.MapView
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".MapsActivity"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+
         android:id="@+id/mapView"
         android:layout_width="410dp"
         android:layout_height="300dp"
@@ -91,8 +100,19 @@
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
+<<<<<<< HEAD
         app:layout_constraintVertical_bias="0.107"
         app:layout_constraintHorizontal_bias="0.509" />
 
+=======
+        app:layout_constraintRight_toRightOf="parent">
+
+        <Button
+            android:id="@+id/btnCallNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Button" />
+    </ScrollView>
+>>>>>>> 32e9e7b738424380958af2f87fb12c7b26e2dc06
 
 </android.support.constraint.ConstraintLayout>

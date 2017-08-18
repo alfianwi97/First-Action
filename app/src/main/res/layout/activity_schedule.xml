@@ -12,6 +12,7 @@
         android:id="@+id/imageView"
         android:layout_width="387dp"
         android:layout_height="71dp"
+<<<<<<< HEAD:app/src/main/res/layout/activity_schedule
         android:src="@drawable/scheduleHeader"
         android:layout_marginLeft="-99dp"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -66,5 +67,10 @@
         android:layout_marginBottom="8dp" />
 
 
+=======
+        android:src="@drawable/schedule_header"
+        tools:layout_editor_absoluteY="-89dp"
+        tools:layout_editor_absoluteX="-13dp" />
+>>>>>>> 32e9e7b738424380958af2f87fb12c7b26e2dc06:app/src/main/res/layout/activity_schedule.xml
 
 </android.support.constraint.ConstraintLayout>
