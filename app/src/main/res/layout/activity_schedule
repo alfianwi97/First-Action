@@ -10,10 +10,61 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="411dp"
+        android:layout_width="387dp"
         android:layout_height="71dp"
         android:src="@drawable/scheduleHeader"
-        tools:layout_editor_absoluteY="-89dp"
-        tools:layout_editor_absoluteX="-13dp" />
+        android:layout_marginLeft="-99dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintHorizontal_bias="0.172"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="501dp" />
+
+    <Button
+        android:id="@+id/btnCall"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:background="@drawable/call_menu"
+        app:layout_constraintRight_toLeftOf="@+id/btnSchedule"
+        android:layout_marginRight="4dp"
+        app:layout_constraintLeft_toRightOf="@+id/btnMap"
+        android:layout_marginLeft="6dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="8dp" />
+
+    <Button
+        android:id="@+id/btnLogin"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:background="@drawable/login_menu"
+        android:layout_marginLeft="0dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="8dp" />
+
+    <Button
+        android:id="@+id/btnMap"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:background="@drawable/maps"
+        app:layout_constraintLeft_toRightOf="@+id/btnLogin"
+        android:layout_marginLeft="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintRight_toLeftOf="@+id/btnCall"
+        android:layout_marginRight="4dp" />
+
+    <Button
+        android:id="@+id/btnSchedule"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:background="@drawable/schedule"
+        android:layout_marginRight="-44dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="8dp" />
+
+
 
 </android.support.constraint.ConstraintLayout>
