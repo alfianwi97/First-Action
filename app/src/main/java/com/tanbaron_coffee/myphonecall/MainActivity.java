@@ -404,6 +404,8 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
                 startActivity(callIntent);
             }
         });
+
+        /////////////Menu Button//////////////////////////
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -434,11 +436,12 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
 //                }
 
                 Intent mapIntent = new Intent(getApplicationContext(), MapsActivity.class);
-                mapIntent.putExtra("longitude",user.getCurrentLocation().getLongitude());
-                mapIntent.putExtra("latitude",user.getCurrentLocation().getLatitude());
+//                mapIntent.putExtra("longitude",user.getCurrentLocation().getLongitude());
+//                mapIntent.putExtra("latitude",user.getCurrentLocation().getLatitude());
                 startActivity(mapIntent);
             }
         });
+        ///////////End of Menu Button///////////////////////
     }
 
     @Override

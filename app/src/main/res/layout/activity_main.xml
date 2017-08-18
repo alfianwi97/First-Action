@@ -56,7 +56,7 @@
         android:background="@drawable/call_menu"
         app:layout_constraintRight_toLeftOf="@+id/btnSchedule"
         android:layout_marginRight="8dp"
-        app:layout_constraintLeft_toRightOf="@+id/map"
+        app:layout_constraintLeft_toRightOf="@+id/btnMap"
         android:layout_marginLeft="6dp"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="8dp" />
