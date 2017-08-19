@@ -32,6 +32,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Button buttonLogin;
     private Button buttonSchedule;
     private Button buttonCall;
+    private Button buttonCallMenu;
+
     private String currentPhoneNumber;
 
     @Override
@@ -46,6 +48,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         buttonLogin = (Button) findViewById(R.id.btnLogin);
         buttonSchedule = (Button) findViewById(R.id.btnSchedule);
         buttonCall = (Button) findViewById(R.id.btnCallNumber);
+        buttonCallMenu = (Button) findViewById(R.id.btnCall);
         currentPhoneNumber = null;
     }
 
@@ -58,6 +61,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
      */
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -121,6 +125,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 startActivity(new Intent(getApplicationContext(), ScheduleActivity.class));
             }
         });
+        buttonCallMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), ScheduleActivity.class));
+            }
+        });
+
         buttonCall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -140,7 +151,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         callIntent.setData(Uri.parse(phoneNumber));
         startActivity(callIntent);
-//        startActivity(new Intent(getApplicationContext(), ScheduleActivity.class));
     }
 
     @Override
@@ -155,14 +165,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     @Override
-    public void onLocationChanged(Location location) {
-
-    }
+    public void onLocationChanged(Location location) {}
     @Override
     public boolean onMarkerClick(Marker marker) {
+        if(marker.getTitle() == "Your Location"){
+            currentPhoneNumber = "112";
+            return false;
+        }
         currentPhoneNumber = marker.getSnippet();
         Toast.makeText(MapsActivity.this, marker.getSnippet(), Toast.LENGTH_LONG).show();
-
         return false;
     }
 }

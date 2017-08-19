@@ -1,7 +1,10 @@
 package com.tanbaron_coffee.myphonecall;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -9,14 +12,23 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import static com.tanbaron_coffee.myphonecall.MainActivity.user;
+
 public class ScheduleActivity extends Activity {
     public static List<Schedule> routines;
     public static List<Schedule> events;
+    private Button buttonLogin;
+    private Button buttonMap;
+    private Button buttonUrgentCall;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule);
+
+        buttonMap = (Button) findViewById(R.id.btnMap);
+        buttonLogin = (Button) findViewById(R.id.btnLogin);
+        buttonUrgentCall = (Button) findViewById(R.id.btnCall);
 
         routines = new ArrayList<Schedule>();
         events = new ArrayList<Schedule>();
@@ -24,6 +36,31 @@ public class ScheduleActivity extends Activity {
         routines.add(new Schedule());
 
         Toast.makeText(ScheduleActivity.this, routines.get(0).getDay().toString(), Toast.LENGTH_LONG).show();
+
+        buttonLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(ScheduleActivity.this, AccountActivity.class));
+            }
+        });
+        buttonUrgentCall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent scheduleIntent = new Intent(getApplicationContext(), ScheduleActivity.class);
+                startActivity(scheduleIntent);
+            }
+        });
+        buttonMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(user.isCurrentLocationEmpty()){
+                    Toast.makeText(ScheduleActivity.this, "Failed to get location", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                Intent mapIntent = new Intent(getApplicationContext(), MapsActivity.class);
+                startActivity(mapIntent);
+            }
+        });
     }
 
     public class Schedule{

@@ -34,14 +34,12 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResponse;
-import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -67,7 +65,6 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
     private Button buttonMap;
     private Button buttonSchedule;
     private FusedLocationProviderClient mFusedLocationClient;
-//    TextView statusTextField;
     TextView resultTextField;
 
     public static ScheduleActivity.User user=new ScheduleActivity.User();
@@ -80,7 +77,6 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
     private GoogleApiClient mGoogleApiClient;
     LocationRequest mLocationRequest;
     Task<LocationSettingsResponse> task;
-    PendingResult<LocationSettingsResult> result;
 
     private ConnectionHandler connectionHandler;
     private GpsHandler gpsHandler;
@@ -88,7 +84,9 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
     private RequestQueue requestQueue;
     private RequestCreator requestCreator;
     private Gson gson;
-    GsonBuilder gsonBuilder;
+    private GsonBuilder gsonBuilder;
+
+    public static Boolean firstOpen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,6 +140,7 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
         gson = gsonBuilder.create();
         mGoogleApiClient.connect();
 
+        firstOpen = false;
 
 //        HttpURLConnection httpconn = null;
 //        try {
@@ -346,11 +345,6 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
             public void onClick(View arg0) {
                 Intent callIntent = new Intent(Intent.ACTION_CALL);
                 String phoneNumber="tel:";
-
-////                resultTextField.setText(" HOS:"+hospitalLocation.size()+"|POL:"+policeLocation.size()+"|FS:"+fireStationLocation.size());
-                for(int i=0;i<fireStationLocation.size();i++);
-////                    resultTextField.setText(resultTextField.getText()+fireStationLocation.get(i).getName()+"|"+fireStationLocation.get(i).getPhoneNumber()+"|");
-
                 if(fireStationLocation.isEmpty()){
                     phoneNumber+="112";
                 }else{
@@ -368,11 +362,6 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
             public void onClick(View arg0) {
                 Intent callIntent = new Intent(Intent.ACTION_CALL);
                 String phoneNumber="tel:";
-////                resultTextField.setText(" HOS:"+hospitalLocation.size()+"|POL:"+policeLocation.size()+"|FS:"+fireStationLocation.size());
-                for(int i=0;i<hospitalLocation.size();i++);
-//                    Toast.makeText(MainActivity.this, hospitalLocation.get(i).getName()+" "+hospitalLocation.get(i).getDistance().toString(), Toast.LENGTH_LONG).show();
-////                    resultTextField.setText(resultTextField.getText()+hospitalLocation.get(i).getName()+"|"+hospitalLocation.get(i).getPhoneNumber()+"|");
-
                 if(hospitalLocation.isEmpty()){
                     phoneNumber+="112";
                 }else{
@@ -389,10 +378,6 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
             public void onClick(View arg0) {
                 Intent callIntent = new Intent(Intent.ACTION_CALL);
                 String phoneNumber="tel:";
-////                resultTextField.setText(" HOS:"+hospitalLocation.size()+"|POL:"+policeLocation.size()+"|FS:"+fireStationLocation.size());
-                for(int i=0;i<policeLocation.size();i++);
-////                    resultTextField.setText(resultTextField.getText()+policeLocation.get(i).getName()+"|"+policeLocation.get(i).getPhoneNumber()+"|");
-
                 if(policeLocation.isEmpty()){
                     phoneNumber+="112";
                 }else{
@@ -409,7 +394,7 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            startActivity(new Intent(MainActivity.this, AccountActivity.class));
+            startActivity(new Intent(getApplicationContext(), AccountActivity.class));
             }
         });
         buttonSchedule.setOnClickListener(new View.OnClickListener() {
@@ -422,23 +407,12 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
         buttonMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                if (!connectionHandler.isConnected()) return; //alert
-//                try {
-//                    gpsHandler.gpsCheck();
-//                    if (!gpsHandler.isEnable()) gpsHandler.promptGpsSetting();
-//                } catch (Settings.SettingNotFoundException e) {
-//                    e.printStackTrace();
-//                }
-//                if (!gpsHandler.isEnable()) return; //show alert
-//                if (connectionHandler.isConnected() && gpsHandler.isEnable()){
-//                    gpsHandler.calculateLocation();
-//                    gpsHandler.findNation();
-//                }
-
-                Intent mapIntent = new Intent(getApplicationContext(), MapsActivity.class);
-//                mapIntent.putExtra("longitude",user.getCurrentLocation().getLongitude());
-//                mapIntent.putExtra("latitude",user.getCurrentLocation().getLatitude());
-                startActivity(mapIntent);
+            if(user.isCurrentLocationEmpty()){
+                Toast.makeText(MainActivity.this, "Failed to get location", Toast.LENGTH_LONG).show();
+                return;
+            }
+            Intent mapIntent = new Intent(getApplicationContext(), MapsActivity.class);
+            startActivity(mapIntent);
             }
         });
         ///////////End of Menu Button///////////////////////
@@ -455,14 +429,16 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
 
     protected void onStart() {
         super.onStart();
-        final Handler handler2 = new Handler();
-        handler2.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                gpsHandler.startRepeatingTask();
-            }
-        }, 500);
-
+        if(!firstOpen){
+            firstOpen=true;
+            final Handler handler2 = new Handler();
+            handler2.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    gpsHandler.startRepeatingTask();
+                }
+            }, 500);
+        }
     }
     protected void onStop() {
         mGoogleApiClient.disconnect();
