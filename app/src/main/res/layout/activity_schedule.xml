@@ -12,8 +12,7 @@
         android:id="@+id/imageView"
         android:layout_width="387dp"
         android:layout_height="71dp"
-<<<<<<< HEAD:app/src/main/res/layout/activity_schedule
-        android:src="@drawable/scheduleHeader"
+        android:src="@drawable/schedule_header"
         android:layout_marginLeft="-99dp"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginRight="8dp"
