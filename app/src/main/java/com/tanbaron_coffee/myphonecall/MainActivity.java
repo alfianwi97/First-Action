@@ -691,9 +691,7 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
         public void startRepeatingTask() { sendRequest.run(); }
 
         @Override
-        public void stopRepeatingTask() { removeCallbacks(sendRequest);
-            Toast.makeText(MainActivity.this, "stop", Toast.LENGTH_LONG).show();
-        }
+        public void stopRepeatingTask() { removeCallbacks(sendRequest);}
 
         private void sendFirstRequest(){
             status="work";
@@ -709,11 +707,14 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
             @Override
             public void run() {
             if(!connectionHandler.isConnected() || gpsHandler.isLatLongEmpty() || !status.equals("idle")){
+                if(status.equals("done")){
+                    Toast.makeText(MainActivity.this, "Program ready to use", Toast.LENGTH_LONG).show();
+                    status="stop";
+                }
                 postDelayed(sendRequest, timeInterval);
                 return;
             }
             setMainRequestUrl(requestCreator.getFirstRequest(Double.toString(gpsHandler.getLatitude()), Double.toString(gpsHandler.getLongitude()),null));
-////            resultTextField.setText(requestCreator.getFirstRequest(Double.toString(gpsHandler.getLatitude()), Double.toString(gpsHandler.getLongitude()),null)+" "+gpsHandler.getLatitude());
             sendFirstRequest();
             postDelayed(sendRequest,timeInterval/5);
             }
@@ -733,6 +734,7 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
             ResponseClass res = null;
             res = gson.fromJson(response, ResponseClass.class);
             if(res==null || !res.status.equals("OK")){
+                Toast.makeText(MainActivity.this, "Failed to scan data", Toast.LENGTH_LONG).show();
                 status="idle";
                 return;
             }
@@ -740,7 +742,7 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
                 sendSecondRequest(requestCreator.getSecondRequest(res.results.get(i).place_id));
             }
             if(res.pageToken!=null){
-                Toast.makeText(MainActivity.this, "has next", Toast.LENGTH_LONG).show();
+                //Toast.makeText(MainActivity.this, "has next", Toast.LENGTH_LONG).show();
                 mainRequestUrl=requestCreator.getFirstRequest(Double.toString(gpsHandler.getLatitude()),Double.toString(gpsHandler.getLongitude()),res.pageToken);
                 postDelayed(sendAdditionalRequest,3000);
             }

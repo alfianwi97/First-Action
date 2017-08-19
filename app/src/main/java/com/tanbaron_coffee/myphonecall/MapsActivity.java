@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -88,21 +87,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             mMap.addMarker(new MarkerOptions().position(new LatLng(hospitalLocation.get(i).getLatitude(),
                     hospitalLocation.get(i).getLongitude())).title(hospitalLocation.get(i).getName())
                     .icon(BitmapDescriptorFactory.fromBitmap(resizeBitmap("hospital_logo",iconWidth,iconHeight))).flat(true)
-                    .snippet(hospitalLocation.get(i).getPhoneNumber()));
+                    .snippet(hospitalLocation.get(i).getPhoneNumber()+" - "+hospitalLocation.get(i).getDistance().toString()+" meters"));
 
         //police station location init
         for(int i=0;i<policeLocation.size();i++)
             mMap.addMarker(new MarkerOptions().position(new LatLng(policeLocation.get(i).getLatitude(),
                     policeLocation.get(i).getLongitude())).title(policeLocation.get(i).getName())
                     .icon(BitmapDescriptorFactory.fromBitmap(resizeBitmap("police_logo",iconWidth,iconHeight))).flat(true)
-                    .snippet(policeLocation.get(i).getPhoneNumber()));
+                    .snippet(policeLocation.get(i).getPhoneNumber()+" - "+policeLocation.get(i).getDistance().toString()+" meters"));
 
         //fire station location init
         for(int i=0;i<fireStationLocation.size();i++)
             mMap.addMarker(new MarkerOptions().position(new LatLng(fireStationLocation.get(i).getLatitude(),
                     fireStationLocation.get(i).getLongitude())).title(fireStationLocation.get(i).getName())
                     .icon(BitmapDescriptorFactory.fromBitmap(resizeBitmap("fire_station_logo",iconWidth,iconHeight))).flat(true)
-                    .snippet(fireStationLocation.get(i).getPhoneNumber()));
+                    .snippet(fireStationLocation.get(i).getPhoneNumber()+" - "+fireStationLocation.get(i).getDistance().toString()+" meters"));
 
         cameraPosition = new CameraPosition.Builder()
                 .target(userLatLng)      // Sets the center of the map
@@ -144,7 +143,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Intent callIntent = new Intent(Intent.ACTION_CALL);
         String phoneNumber="tel:";
 
-        if(currentPhoneNumber==null){
+        if(currentPhoneNumber==null || currentPhoneNumber==""){
             phoneNumber+="112";
         }else{
             phoneNumber+=currentPhoneNumber;
@@ -168,12 +167,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onLocationChanged(Location location) {}
     @Override
     public boolean onMarkerClick(Marker marker) {
-        if(marker.getTitle() == "Your Location"){
+        if(marker.getTitle().equals("Your Location")){
             currentPhoneNumber = "112";
             return false;
         }
-        currentPhoneNumber = marker.getSnippet();
-        Toast.makeText(MapsActivity.this, marker.getSnippet(), Toast.LENGTH_LONG).show();
+        currentPhoneNumber="";
+        for(int i=0;i<marker.getSnippet().length();i++)
+            if(marker.getSnippet().charAt(i)==' ') break;
+            else currentPhoneNumber += marker.getSnippet().charAt(i);
+        //Toast.makeText(MapsActivity.this, marker.getSnippet(), Toast.LENGTH_LONG).show();
         return false;
     }
 }
