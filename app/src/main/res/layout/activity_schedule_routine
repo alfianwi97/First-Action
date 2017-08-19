@@ -107,7 +107,7 @@
             android:id="@+id/imageView4"
             android:layout_width="370dp"
             android:layout_height="40dp"
-            app:srcCompat="@drawable/date_event"
+            app:srcCompat="@drawable/days_routine"
             tools:layout_editor_absoluteX="6dp"
             android:layout_marginBottom="0dp"
             app:layout_constraintBottom_toTopOf="@+id/imageView5" />
