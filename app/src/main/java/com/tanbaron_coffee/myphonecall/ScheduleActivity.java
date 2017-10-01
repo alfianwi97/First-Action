@@ -13,7 +13,9 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import static com.tanbaron_coffee.myphonecall.MainActivity.user;
-
+///////////////////////////////////////////NOTE/////////////////////////////////////////////////////
+// This module is still under construction
+////////////////////////////////////////////////////////////////////////////////////////////////////
 public class ScheduleActivity extends Activity {
     public static List<Schedule> routines;
     public static List<Schedule> events;
@@ -35,7 +37,7 @@ public class ScheduleActivity extends Activity {
 
         routines.add(new Schedule());
 
-        Toast.makeText(ScheduleActivity.this, routines.get(0).getDay().toString(), Toast.LENGTH_LONG).show();
+//        Toast.makeText(ScheduleActivity.this, routines.get(0).getDay().toString(), Toast.LENGTH_LONG).show();
 
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override

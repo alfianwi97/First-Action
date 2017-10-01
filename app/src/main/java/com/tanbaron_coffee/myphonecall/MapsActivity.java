@@ -70,13 +70,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Integer iconWidth = 66;
         Integer iconHeight = 62;
 
-//        Intent receiveIntent;
-//        double longitude;
-//        double latitude;
-//        receiveIntent = this.getIntent();
-//        longitude = receiveIntent.getDoubleExtra("longitude",0);
-//        latitude = receiveIntent.getDoubleExtra("latitude",0);
-
         LatLng userLatLng = new LatLng(user.getCurrentLocation().getLatitude(),user.getCurrentLocation().getLongitude());
 
         //user location init
@@ -127,7 +120,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         buttonCallMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), ScheduleActivity.class));
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
             }
         });
 
@@ -165,6 +158,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onLocationChanged(Location location) {}
+
     @Override
     public boolean onMarkerClick(Marker marker) {
         if(marker.getTitle().equals("Your Location")){
@@ -175,7 +169,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         for(int i=0;i<marker.getSnippet().length();i++)
             if(marker.getSnippet().charAt(i)==' ') break;
             else currentPhoneNumber += marker.getSnippet().charAt(i);
-        //Toast.makeText(MapsActivity.this, marker.getSnippet(), Toast.LENGTH_LONG).show();
         return false;
     }
 }
