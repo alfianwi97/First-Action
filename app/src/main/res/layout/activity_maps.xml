@@ -71,7 +71,7 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
 
         android:id="@+id/mapView"
-        android:layout_width="410dp"
+        android:layout_width="390dp"
         android:layout_height="300dp"
         android:layout_marginRight="8dp"
         app:layout_constraintRight_toRightOf="parent"
