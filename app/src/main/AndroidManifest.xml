@@ -13,6 +13,7 @@
     <uses-permission android:name="com.samsung.accessory.permission.ACCESSORY_FRAMEWORK" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
@@ -58,7 +59,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.tanbaron_coffee.myphonecall.MainActivity" />
         </activity>
-        <activity android:name=".ScheduleActivity"></activity>
+        <activity android:name=".ScheduleActivity" />
+        <activity android:name=".ScheduleTest"></activity>
     </application>
 
 </manifest>

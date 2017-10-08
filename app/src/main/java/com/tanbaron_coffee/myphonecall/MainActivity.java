@@ -232,7 +232,8 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
         buttonSchedule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent scheduleIntent = new Intent(getApplicationContext(), ScheduleActivity.class);
+                Intent scheduleIntent = new Intent(getApplicationContext(), ScheduleTest.class);
+//                Intent scheduleIntent = new Intent(getApplicationContext(), ScheduleActivity.class);
                 startActivity(scheduleIntent);
             }
         });
@@ -353,7 +354,6 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
             Double lat=getLatitude();
             Double lon=getLongitude();
             if(lat.compareTo(0.0)==0 || lon.compareTo(0.0)==0) return true;
-         //   Toast.makeText(MainActivity.this, "DAMN!", Toast.LENGTH_LONG).show();
             return false;
         }
         public void setLongitude(double longitude){location.setLongitude(longitude);}
@@ -383,9 +383,6 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
                     setLongitude(mLastLocation.getLongitude());
                     setLatitude(mLastLocation.getLatitude());
                     user.setCurrentLocation(new LocationData(mLastLocation.getLatitude(), mLastLocation.getLongitude()));
-//                }else{
-//                    setLongitude(0);
-//                    setLatitude(0);
                 }
             }catch(SecurityException e) {}
         }
@@ -572,8 +569,12 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
                     }
                 }
             }
-            if(requestDone==totalRequestPackets) status="done";
-                else status="work";
+
+            if(requestDone==totalRequestPackets){
+                if(!status.equals("finish"))
+                    status="done";
+            }
+            else status="work";
             if(!connectionHandler.isConnected() || gpsHandler.isLatLongEmpty() || requestWork==totalRequestPackets) {
                 if(status.equals("done")){
                     Toast.makeText(MainActivity.this, "Program ready to use", Toast.LENGTH_LONG).show();
@@ -657,7 +658,7 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
                         }
                         radius=secondRadius;
 //                        Toast.makeText(MainActivity.this, "Latlong:"+gpsHandler.getLatitude()+":"+gpsHandler.getLongitude()+" | rad:"+radius, Toast.LENGTH_LONG).show();
-                        Toast.makeText(MainActivity.this,mainRequestUrl, Toast.LENGTH_LONG).show();
+//                        Toast.makeText(MainActivity.this,mainRequestUrl, Toast.LENGTH_LONG).show();
                     }
 //                    else{
 //                        errMsgCounter++;
