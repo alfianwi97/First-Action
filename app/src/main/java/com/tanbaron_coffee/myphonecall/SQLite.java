@@ -12,7 +12,7 @@ import android.provider.BaseColumns;
 public class SQLite extends SQLiteOpenHelper {
     // If you change the database schema, you must increment the database version.
     public static final int DATABASE_VERSION = 1;
-    public static final String DATABASE_NAME = "FeedReader.db";
+    public static final String DATABASE_NAME = "Schedule.db";
 
     private static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + ScheduleTable.ScheduleEntry.TABLE_NAME + " (" +
