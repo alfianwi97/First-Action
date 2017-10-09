@@ -6,118 +6,120 @@
     android:layout_height="fill_parent"
     android:orientation="vertical"
     android:background="#ffffff"
-    android:weightSum="1">
+    android:weightSum="1"
+    tools:layout_editor_absoluteY="25dp"
+    tools:layout_editor_absoluteX="0dp">
 
     <Button
         android:id="@+id/btnHospital"
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:background="@drawable/doctor"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintVertical_bias="0.352"
-        android:layout_marginRight="16dp"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toRightOf="@+id/btnFireStation"
-        android:layout_marginLeft="8dp"
-        app:layout_constraintHorizontal_bias="0.604" />
+        tools:layout_editor_absoluteY="162dp"
+        app:layout_constraintRight_toLeftOf="@+id/btnFireStation"
+        app:layout_constraintLeft_toLeftOf="parent" />
 
     <Button
         android:id="@+id/btnFireStation"
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:background="@drawable/fireman"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginLeft="42dp"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintVertical_bias="0.352" />
+        tools:layout_editor_absoluteY="162dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/btnHospital" />
 
     <Button
         android:id="@+id/btnPolice"
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:background="@drawable/policeman"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@+id/btnFireStation"
         android:layout_marginRight="8dp"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginLeft="8dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="167dp" />
+        app:layout_constraintLeft_toLeftOf="parent" />
 
     <Button
         android:id="@+id/btnCall"
-        android:layout_width="85dp"
+        android:layout_width="88dp"
         android:layout_height="85dp"
         android:background="@drawable/phone_logo"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="16dp"
         app:layout_constraintRight_toLeftOf="@+id/btnSchedule"
-        android:layout_marginRight="4dp" />
+        app:layout_constraintLeft_toRightOf="@+id/btnMap"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnPolice"
+        app:layout_constraintVertical_bias="0.771" />
 
     <Button
         android:id="@+id/btnLogin"
-        android:layout_width="85dp"
+        android:layout_width="88dp"
         android:layout_height="85dp"
         android:background="@drawable/account_logo"
-        android:layout_marginLeft="4dp"
+        app:layout_constraintRight_toLeftOf="@+id/btnMap"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintRight_toLeftOf="@+id/btnMap"
-        android:layout_marginRight="4dp" />
+        app:layout_constraintTop_toBottomOf="@+id/btnHospital"
+        app:layout_constraintVertical_bias="0.92" />
 
     <Button
         android:id="@+id/btnMap"
-        android:layout_width="85dp"
+        android:layout_width="88dp"
         android:layout_height="85dp"
         android:background="@drawable/maps_logo"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="16dp"
         app:layout_constraintRight_toLeftOf="@+id/btnCall"
-        android:layout_marginRight="4dp" />
+        app:layout_constraintLeft_toRightOf="@+id/btnLogin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnPolice"
+        app:layout_constraintVertical_bias="0.771" />
 
     <Button
         android:id="@+id/btnSchedule"
-        android:layout_width="85dp"
+        android:layout_width="88dp"
         android:layout_height="85dp"
         android:background="@drawable/schedule_logo"
-        android:layout_marginRight="4dp"
         app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/btnCall"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="16dp" />
+        app:layout_constraintTop_toBottomOf="@+id/btnFireStation"
+        app:layout_constraintVertical_bias="0.92" />
 
     <ImageView
         android:id="@+id/title"
         android:layout_width="350dp"
         android:layout_height="80dp"
         android:src="@drawable/first_action_text"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="25dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginRight="17dp"
         android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="8dp"
+        app:layout_constraintHorizontal_bias="1.0"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="17dp" />
 
     <ImageView
         android:id="@+id/subtitle"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
         android:src="@drawable/urgent_call_text"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/title"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/btnPolice"
-        app:layout_constraintVertical_bias="0.0"
-        android:layout_marginLeft="-16dp"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginRight="8dp"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintHorizontal_bias="1.0" />
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/title"
+        app:layout_constraintHorizontal_bias="0.25"
+        android:layout_marginEnd="8dp" />
+
+    <android.support.constraint.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/guideline"
+        app:layout_constraintGuide_begin="20dp"
+        android:orientation="horizontal"
+        tools:layout_editor_absoluteY="20dp"
+        tools:layout_editor_absoluteX="0dp" />
 
     <!--<TextView-->
         <!--android:id="@+id/resultField"-->
