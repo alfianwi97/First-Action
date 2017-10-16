@@ -40,7 +40,9 @@
         android:layout_marginRight="8dp"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginLeft="8dp"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp" />
 
     <Button
         android:id="@+id/btnCall"
@@ -49,9 +51,8 @@
         android:background="@drawable/phone_logo"
         app:layout_constraintRight_toLeftOf="@+id/btnSchedule"
         app:layout_constraintLeft_toRightOf="@+id/btnMap"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnPolice"
-        app:layout_constraintVertical_bias="0.746" />
+        app:layout_constraintVertical_bias="0.746"
+        app:layout_constraintTop_toTopOf="@+id/btnSchedule" />
 
     <Button
         android:id="@+id/btnLogin"
@@ -60,9 +61,8 @@
         android:background="@drawable/account_logo"
         app:layout_constraintRight_toLeftOf="@+id/btnMap"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnHospital"
-        app:layout_constraintVertical_bias="0.917" />
+        app:layout_constraintVertical_bias="0.917"
+        app:layout_constraintTop_toTopOf="@+id/btnMap" />
 
     <Button
         android:id="@+id/btnMap"
@@ -71,9 +71,8 @@
         android:background="@drawable/maps_logo"
         app:layout_constraintRight_toLeftOf="@+id/btnCall"
         app:layout_constraintLeft_toRightOf="@+id/btnLogin"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnPolice"
-        app:layout_constraintVertical_bias="0.746" />
+        app:layout_constraintVertical_bias="0.746"
+        app:layout_constraintTop_toTopOf="@+id/btnCall" />
 
     <Button
         android:id="@+id/btnSchedule"
