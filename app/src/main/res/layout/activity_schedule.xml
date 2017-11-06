@@ -14,7 +14,7 @@
         android:id="@+id/imageView"
         android:layout_width="189dp"
         android:layout_height="43dp"
-        app:srcCompat="@drawable/schedule_text"
+        android:src="@drawable/schedule_text"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
@@ -59,7 +59,11 @@
         app:layout_constraintLeft_toRightOf="@+id/btnCall"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+<<<<<<< HEAD
         app:layout_constraintVertical_bias="1.0" />
+=======
+        android:layout_marginTop="8dp" />
+>>>>>>> f7b154f3dfb618f754205119d93a9d66c1259a16
 
 
 </android.support.constraint.ConstraintLayout>

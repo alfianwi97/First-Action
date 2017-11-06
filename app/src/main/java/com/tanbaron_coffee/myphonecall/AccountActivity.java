@@ -47,10 +47,17 @@ public class AccountActivity extends AppCompatActivity implements LoaderCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
         // Set up the login form.
+<<<<<<< HEAD
 //        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
 //        populateAutoComplete();
 
 //        mPasswordView = (EditText) findViewById(R.id.password);
+=======
+        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
+        populateAutoComplete();
+
+        //mPasswordView = (EditText) findViewById(R.id.password);
+>>>>>>> f7b154f3dfb618f754205119d93a9d66c1259a16
 //        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 //            @Override
 //            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -78,7 +85,7 @@ public class AccountActivity extends AppCompatActivity implements LoaderCallback
             }
         });
 
-        mLoginFormView = findViewById(R.id.login);
+        //mLoginFormView = findViewById(R.id.login);
         mProgressView = findViewById(R.id.login_progress);
     }
 
@@ -131,6 +138,7 @@ public class AccountActivity extends AppCompatActivity implements LoaderCallback
      * If there are form errors (invalid email, missing fields, etc.), the
      * errors are presented and no actual login attempt is made.
      */
+<<<<<<< HEAD
 //    private void attemptLogin() {
 //        if (mAuthTask != null) {
 //            return;
@@ -148,11 +156,31 @@ public class AccountActivity extends AppCompatActivity implements LoaderCallback
 //        View focusView = null;
 //
 //        // Check for a valid password, if the user entered one.
+=======
+    private void attemptLogin() {
+        if (mAuthTask != null) {
+            return;
+        }
+
+        // Reset errors.
+        mEmailView.setError(null);
+        mPasswordView.setError(null);
+
+        // Store values at the time of the login attempt.
+        String email = mEmailView.getText().toString();
+//        String password = mPasswordView.getText().toString();
+
+        boolean cancel = false;
+        View focusView = null;
+
+        // Check for a valid password, if the user entered one.
+>>>>>>> f7b154f3dfb618f754205119d93a9d66c1259a16
 //        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
 //            mPasswordView.setError(getString(R.string.error_invalid_password));
 //            focusView = mPasswordView;
 //            cancel = true;
 //        }
+<<<<<<< HEAD
 //
 //        // Check for a valid email address.
 //        if (TextUtils.isEmpty(email)) {
@@ -165,6 +193,20 @@ public class AccountActivity extends AppCompatActivity implements LoaderCallback
 //            cancel = true;
 //        }
 //
+=======
+
+        // Check for a valid email address.
+        if (TextUtils.isEmpty(email)) {
+            mEmailView.setError(getString(R.string.error_field_required));
+            focusView = mEmailView;
+            cancel = true;
+        } else if (!isEmailValid(email)) {
+            mEmailView.setError(getString(R.string.error_invalid_email));
+            focusView = mEmailView;
+            cancel = true;
+        }
+
+>>>>>>> f7b154f3dfb618f754205119d93a9d66c1259a16
 //        if (cancel) {
 //            // There was an error; don't attempt login and focus the first
 //            // form field with an error.
@@ -176,6 +218,7 @@ public class AccountActivity extends AppCompatActivity implements LoaderCallback
 //            mAuthTask = new UserLoginTask(email, password);
 //            mAuthTask.execute((Void) null);
 //        }
+<<<<<<< HEAD
 //    }
 //
 //    private boolean isEmailValid(String email) {
@@ -187,6 +230,19 @@ public class AccountActivity extends AppCompatActivity implements LoaderCallback
 //        //TODO: Replace this with your own logic
 //        return password.length() > 4;
 //    }
+=======
+    }
+
+    private boolean isEmailValid(String email) {
+        //TODO: Replace this with your own logic
+        return email.contains("@");
+    }
+
+    private boolean isPasswordValid(String password) {
+        //TODO: Replace this with your own logic
+        return password.length() > 4;
+    }
+>>>>>>> f7b154f3dfb618f754205119d93a9d66c1259a16
 
     /**
      * Shows the progress UI and hides the login form.
