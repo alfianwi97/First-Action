@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Address;
 import android.location.Geocoder;
@@ -57,7 +58,6 @@ import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends Activity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
-    private static final int REQUEST_CHECK_SETTINGS = 0x1;
     private Button buttonCallPolice;
     private Button buttonCallHospital;
     private Button buttonCallFireStation;
@@ -71,11 +71,11 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
     public static List<LocationData> policeLocation;
     public static List<LocationData> fireStationLocation;
 
-    SettingsClient client;
-    LocationSettingsRequest.Builder builder;
-    private GoogleApiClient mGoogleApiClient;
-    LocationRequest mLocationRequest;
-    Task<LocationSettingsResponse> task;
+    public SettingsClient client;
+    public LocationSettingsRequest.Builder builder;
+    public GoogleApiClient mGoogleApiClient;
+    public LocationRequest mLocationRequest;
+    public Task<LocationSettingsResponse> task;
 
     private ConnectionHandler connectionHandler;
     private GpsHandler gpsHandler;
@@ -86,6 +86,13 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
     private GsonBuilder gsonBuilder;
 
     public static Boolean firstOpen;
+
+    private static final int connectionHandlerInterval=1000;
+    private static final int gpsHandlerInterval=3000;
+    private static final int requestInterval=5000;
+    private static final int requestRadius=5000;
+    private static final int requestRadius2=10000;
+    private static final int REQUEST_CHECK_SETTINGS = 0x1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,10 +108,10 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
         buttonLogin = (Button) findViewById(R.id.btnLogin);
         buttonSchedule = (Button) findViewById(R.id.btnSchedule);
 
-        connectionHandler = new ConnectionHandler(1000);
+        connectionHandler = new ConnectionHandler(connectionHandlerInterval);
         connectionHandler.startRepeatingTask();
 
-        gpsHandler = new GpsHandler(mFusedLocationClient, 3000);
+        gpsHandler = new GpsHandler(mFusedLocationClient, gpsHandlerInterval);
 
         mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(10000);
@@ -115,14 +122,13 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
 
         client = LocationServices.getSettingsClient(this);
         task = client.checkLocationSettings(builder.build());
-
         hospitalLocation = new ArrayList<LocationData>();
         policeLocation = new ArrayList<LocationData>();
         fireStationLocation = new ArrayList<LocationData>();
 
         requestCreator = new RequestCreator();
         requestQueue = Volley.newRequestQueue(getApplicationContext());
-        requestHandler = new RequestHandler(5000,5000,10000);
+        requestHandler = new RequestHandler(requestInterval,requestRadius,requestRadius2);
         requestHandler.startRepeatingTask();
 
         if (mGoogleApiClient == null) {
@@ -252,8 +258,25 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
         /////////////////////////////////////////End of Menu Button/////////////////////////////////
         //////////////////////////////////////////////Database//////////////////////////////////////
         SQLiteDatabase scheduleDb = openOrCreateDatabase("schedule",MODE_PRIVATE,null);
-        scheduleDb.execSQL("CREATE TABLE IF NOT EXISTS event(title VARCHAR,description VARCHAR, );");
-        scheduleDb.execSQL("INSERT INTO TutorialsPoint VALUES('admin','admin');");
+        scheduleDb.execSQL("DROP TABLE IF EXISTS event;");
+        scheduleDb.execSQL("CREATE TABLE IF NOT EXISTS event(title VARCHAR,description VARCHAR, dateTime TEXT, latitude DOUBLE, longitude DOUBLE);");
+//        scheduleDb.execSQL("DELETE FROM event;");
+//        scheduleDb.execSQL("INSERT INTO event VALUES('admin','admin','2017-11-18 20:20:20.100',6.0230210,7.2301203);");
+//        scheduleDb.execSQL("INSERT INTO event VALUES('pian','pian','2017-11-19 20:20:20.100',8.5829312,9.12328592);");
+        Cursor resultSet = scheduleDb.rawQuery("Select * from event",null);
+
+        resultSet.moveToFirst();
+        while(!resultSet.isAfterLast()){
+            String title = resultSet.getString(0);
+            String desc = resultSet.getString(1);
+            String dateTime = resultSet.getString(2);
+            String latitude=resultSet.getString(3);
+            String longitude=resultSet.getString(4);
+            Toast.makeText(MainActivity.this, title+" "+desc+" "+dateTime+"| "+latitude+":"+longitude, Toast.LENGTH_LONG).show();
+            resultSet.moveToNext();
+        }
+        scheduleDb.close();
+        ///////////////////////////////////////////End of Database//////////////////////////////////
     }
 
     @Override
@@ -517,10 +540,6 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
     }
 
     public class RequestCreator{
-//        public String getFirstRequest(String latitude, String longitude, Integer radius, String pageToken){
-//            if(pageToken==null) pageToken="";
-//            return new String("https://maps.googleapis.com/maps/api/place/search/json?location="+latitude+","+longitude+"&hasNextPage=true&nextPage()=true&radius="+radius+"&types=hospital|police|fire_station&key=AIzaSyBrLe3fjpOvYhBRn3U9ypqeVfag3pgNQDY&pagetoken="+pageToken);
-//        }
         public String getFirstRequest(Double latitude, Double longitude, Integer radius, String type, String pageToken){
             if(pageToken==null) pageToken="";
             return new String("https://maps.googleapis.com/maps/api/place/search/json?location="+latitude+","+longitude+"&hasNextPage=true&nextPage()=true&radius="+radius+"&types="+type+"&key=AIzaSyBrLe3fjpOvYhBRn3U9ypqeVfag3pgNQDY&pagetoken="+pageToken);
