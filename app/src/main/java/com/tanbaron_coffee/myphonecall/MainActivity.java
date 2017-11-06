@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.database.sqlite.SQLiteDatabase;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -249,6 +250,10 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
             }
         });
         /////////////////////////////////////////End of Menu Button/////////////////////////////////
+        //////////////////////////////////////////////Database//////////////////////////////////////
+        SQLiteDatabase scheduleDb = openOrCreateDatabase("schedule",MODE_PRIVATE,null);
+        scheduleDb.execSQL("CREATE TABLE IF NOT EXISTS event(title VARCHAR,description VARCHAR, );");
+        scheduleDb.execSQL("INSERT INTO TutorialsPoint VALUES('admin','admin');");
     }
 
     @Override
